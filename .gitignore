@@ -1,0 +1,82 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# github actions
+.secrets
+
+# dot env files... NEVER EVER COMMIT!
+*.env
+!example.env
+RESTLOS_*_ENV
+*.env.json
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+deploymentTargetDropDown.xml
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.angular/cache
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+.eslintcache
+.decrypted~*
+_generated_images
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.angular
+/**/deploymentTargetDropDown.xml
+migrations.json
+.gradle
+
+# environment.json must be set manually.
+# It is chosen from assets/environments/ according to deployment environment
+**/assets/environment/environment.json
+
+# SQL local files
+restlos-keycloak-local.session.sql
+# if we use local backup or migration files
+/*.sql
+
+private.rsa
+
+**/cypress/downloads
+
+# Playwright
+**/test-results
+**/playwright-report
+**/playwright/.cache
+
+/_ignored
+
+# newrelic
+newrelic_agent.log
+.nx/cache
