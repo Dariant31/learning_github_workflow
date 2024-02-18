@@ -10,11 +10,14 @@ jobs:
     name: Build
     runs-on: ubuntu-20.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build an image from dockerfile
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
+      # - name: Build an image from dockerfile
+      #   run: |
+      #     docker build . -t angular-toh
+      - name: Pull pre-vulnerable image from Vulnix
         run: |
-          docker build . -t angular-toh
+          docker pull ghcr.io/vulnix/vulnerability-db:latest
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
