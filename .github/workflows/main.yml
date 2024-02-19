@@ -25,25 +25,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-      # - name: Upload Trivy scan results to GitHub Security tab
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: 'vulnerabilities.sarif'
-      - name: Parse vulnerabilities report and send email
-        run: |
-          # Install required tools (e.g., jq, mailutils)
-          sudo apt-get update && sudo apt-get install -y jq mailutils
-
-          # Parse SARIF report to extract critical vulnerabilities
-          critical_vulns=$(jq '.results[] | select(.severity == "CRITICAL") | .vulnerabilityID' vulnerabilities.json | tr '\n' ' ')
-
-          # Check if critical vulnerabilities were found
-          if [[ -n "$critical_vulns" ]]; then
-            echo "Critical vulnerabilities found: $critical_vulns"
-
-            # Construct email body with detailed information
-            email_body="Critical vulnerabilities found in image angular-toh:\n\n$critical_vulns\n\nPlease address these vulnerabilities as soon as possible."
-
-            # Send email notification to recipients
-            echo -e "$email_body" | mail -s "[Reminder] Critical Vulnerabilities in angular-toh" denz_igi@yahoo.com
-          fi
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          json_file: 'vulnerabilities.json'
