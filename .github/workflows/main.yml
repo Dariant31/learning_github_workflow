@@ -19,18 +19,23 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'angular-toh'
-          format: 'json'
+          format: 'sarif'
+          output: 'vulnerabilities.sarif'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'vulnerabilities.sarif'
       - name: Parse vulnerabilities report and send email
         run: |
           # Install required tools (e.g., jq, mailutils)
           sudo apt-get update && sudo apt-get install -y jq mailutils
 
           # Parse SARIF report to extract critical vulnerabilities
-          critical_vulns=$(jq '.results[] | select(.severity == "CRITICAL") | .vulnerabilityID' vulnerabilities.json | tr '\n' ' ')
+          critical_vulns=$(jq '.results[] | select(.severity == "CRITICAL") | .vulnerabilityID' vulnerabilities.sarif | tr '\n' ' ')
 
           # Check if critical vulnerabilities were found
           if [[ -n "$critical_vulns" ]]; then
