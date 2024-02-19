@@ -19,8 +19,8 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'angular-toh'
-          format: 'sarif'
-          output: 'vulnerabilities.sarif'
+          format: 'json'
+          output: 'vulnerabilities.json'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
@@ -35,7 +35,7 @@ jobs:
           sudo apt-get update && sudo apt-get install -y jq mailutils
 
           # Parse SARIF report to extract critical vulnerabilities
-          critical_vulns=$(jq '.results[] | select(.severity == "CRITICAL") | .vulnerabilityID' vulnerabilities.sarif | tr '\n' ' ')
+          critical_vulns=$(jq '.results[] | select(.severity == "CRITICAL") | .vulnerabilityID' vulnerabilities.json | tr '\n' ' ')
 
           # Check if critical vulnerabilities were found
           if [[ -n "$critical_vulns" ]]; then
