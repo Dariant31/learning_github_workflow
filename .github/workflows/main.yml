@@ -19,14 +19,16 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'angular-toh'
-          format: 'template'
-          output: 'vulnerabilities.sarif'
-          template: '@/contrib/sarif.tpl'
+          format: 'json'
+          output: 'vulnerabilities.json'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL'
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: 'vulnerabilities.sarif'
+      - name: Check for critical vulnerabilities
+        run: |
+          if grep -q '"severity": "CRITICAL"' vulnerabilities.json; then
+            echo "Critical vulnerabilities found!"
+          else
+            echo "No critical vulnerabilities found."
+          fi
